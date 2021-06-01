@@ -18,7 +18,7 @@ services:
     networks:
       - backend
   mysql:
-    image: mysql:latest
+    image: mysql:5.7.29
     container_name: mysql
     volumes:
       - ./mysql:/var/liv/mysql
@@ -27,7 +27,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: laravel
+      MYSQL_DATABASE: homestead
       MYSQL_USER: homestead
       MYSQL_PASSWORD: secret
       MYSQL_ROOT_PASSWORD: secret

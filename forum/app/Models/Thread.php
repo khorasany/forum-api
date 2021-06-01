@@ -14,12 +14,12 @@ class Thread extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function channels()
+    public function channel()
     {
         return $this->belongsTo(Channel::class);
     }
 
-    public function answers()
+    public function answer()
     {
         return $this->hasMany(Answer::class);
     }
