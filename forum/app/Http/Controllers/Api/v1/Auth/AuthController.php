@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Repository\UserRepository;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -19,25 +22,54 @@ class AuthController extends Controller
         //Validate parameters
         $request->validate([
             'name' => ['required'],
-            'email' => ['required','email','unique:users'],
+            'email' => ['required', 'email', 'unique:users'],
             'password' => ['required'],
         ]);
 
-        //Insert Into Database
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        // resolve function created object with UserRepository
+        resolve(UserRepository::class)->create($request);
+
+        return response()->json([
+            'message' => 'create successfully'
+        ], 201);
     }
 
+    /**
+     * Login User
+     * @Method POST
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
+        if (Auth::attempt($request->only(['email', 'password']))) {
+            return response()->json(Auth::user());
+        }
+
+        return response()->json([
+            'message' => 'login failed'
+        ], 401);
     }
 
+    public function user()
+    {
+        return response()->json(Auth::user());
+    }
+
+    /**
+     * logout User
+     */
     public function logout()
     {
+        Auth::logout();
 
+        return response()->json([
+            'message' => 'user logged out successfully'
+        ]);
     }
 }
