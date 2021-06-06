@@ -10,7 +10,7 @@ class Channel extends Model
     use HasFactory;
 
     protected $fillable = [
-      'channel_name',
+      'name',
       'slug'
     ];
 

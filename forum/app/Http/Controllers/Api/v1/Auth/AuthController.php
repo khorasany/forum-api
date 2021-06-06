@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Repository\UserRepository;
-use App\Models\User;
-use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -31,7 +29,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'create successfully'
-        ], 201);
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -53,7 +51,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'login failed'
-        ], 401);
+        ], Response::HTTP_UNAUTHORIZED);
     }
 
     public function user()
@@ -70,6 +68,6 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'user logged out successfully'
-        ]);
+        ],Response::HTTP_OK);
     }
 }

@@ -2,15 +2,14 @@
 
 namespace Tests\Feature\App\Http\Controllers\Api\v1\Auth;
 
-use App\Http\Controllers\Api\v1\Auth\AuthController;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
-
     /**
      * Test register user
      */
@@ -18,7 +17,7 @@ class AuthControllerTest extends TestCase
     {
         $response = $this->postJson(route('auth.register'));
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testRegisterCanBeRegister()
@@ -29,7 +28,7 @@ class AuthControllerTest extends TestCase
             'password'  => 'adygcy8b'
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(Response::HTTP_CREATED);
     }
 
     /**
@@ -40,7 +39,7 @@ class AuthControllerTest extends TestCase
     {
         $response = $this->postJson(route('auth.login'));
 
-        $response->assertStatus(422);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testRegisterUserCanBeValidated()
@@ -52,7 +51,7 @@ class AuthControllerTest extends TestCase
             'password' => 'password'
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     public function testShowUserInfoIfLoggedIn()
@@ -61,7 +60,7 @@ class AuthControllerTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('auth.user'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
     }
 
     public function testUserCanLogout()
@@ -70,6 +69,6 @@ class AuthControllerTest extends TestCase
 
         $response = $this->actingAs($user)->postJson(route('auth.logout'));
 
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
     }
 }
