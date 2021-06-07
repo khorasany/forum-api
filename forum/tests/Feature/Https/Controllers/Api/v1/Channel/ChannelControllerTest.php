@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\App\Http\Controllers\Api\v1\Channel;
 
+use App\Models\Channel;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -11,24 +12,25 @@ class ChannelControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testGetAllChannels()
+    public function testGetAllChannels():void
     {
         $response = $this->get(route('channel.all'));
 
         $response->assertStatus(Response::HTTP_OK);
     }
 
-    public function testChannelCanBeCreated()
+    public function testChannelCanBeCreated():void
     {
+        $channel = Channel::factory()->create();
         $response = $this->postJson(route('channel.create'),[
-            'name' => 'laravel',
-            'slug' => Str::slug('laravel')
+            'name' => $channel->name,
+            'slug' => Str::slug($channel->name)
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
     }
 
-    public function testChannelShouldBeValidate()
+    public function testChannelShouldBeValidate():void
     {
         $response = $this->postJson(route('channel.validate'),[]);
 
@@ -44,9 +46,10 @@ class ChannelControllerTest extends TestCase
 
     public function testUpdateChannel():void
     {
+        $channel = Channel::factory()->create();
         $response = $this->json('PUT',route('channel.update'), [
-                'id' => 1,
-                'name' => 'laravel 1'
+                'id' => $channel->id,
+                'name' => $channel->name
             ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -54,8 +57,9 @@ class ChannelControllerTest extends TestCase
 
     public function testDeleteChannel():void
     {
+        $channel = Channel::factory()->create();
         $response = $this->json('DELETE',route('channel.delete'),[
-            'id' => 1
+            'id' => $channel->id
         ]);
 
         $response->assertStatus(Response::HTTP_OK);

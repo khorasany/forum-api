@@ -11,10 +11,10 @@ class UserRepository
     /**
      * @param Request $request
      */
-    public function create(Request $request): void
+    public function create(Request $request): User
     {
         //Insert Into Database
-        User::create([
+        return User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password)

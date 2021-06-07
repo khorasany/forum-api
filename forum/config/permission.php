@@ -140,4 +140,19 @@ return [
 
         'store' => 'default',
     ],
+
+    'default_super_admin_email' => 'a.khorasany@gmail.com',
+
+    'default_roles' => [
+        'super_admin',
+        'user'
+    ],
+
+
+    'default_permissions' => [
+        'user managements',
+        'channel managements',
+        'thread managements',
+        'answers management'
+    ]
 ];
